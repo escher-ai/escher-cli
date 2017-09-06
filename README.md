@@ -43,4 +43,4 @@ Now under the project root, you can just run
 dave --config-file "experiment.yml"
 ```
 
-and it will automatically run the experiment twice.
+and it will automatically run the experiment twice, using the arguments in the `batch_args` field of the Yaml configuration file.
