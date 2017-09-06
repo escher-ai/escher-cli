@@ -1,0 +1,46 @@
+# `Dave`, a command line utility that runs your script with arguments load from a Yaml file
+
+
+## Example Usage
+
+Suppose you have the following folder structure
+```tree
+└── MAML_tensorflow
+    ├── README.md
+    ├── experiment.yml
+    ├── maml.py
+    └── models
+        ├── __init__.py
+        └── mlp.py
+```
+where the experiment.yml file looks like this:
+```yaml
+%YAML 1.2
+---
+config:
+  max_concurrent: 10
+run: python maml_bradly.py {args}
+default_args:
+  npts: 100
+  num_epochs: 70000
+  num_tasks: 10
+  num_grad_steps: 1
+  num_points_sampled: 10
+  fix_amp: False
+batch_args: # use good typing convention here
+  - num_tasks: 10
+    num_grad_steps: 1
+    num_points_sampled: 10
+  - num_tasks: 10
+    num_grad_steps: 4
+    num_points_sampled: 20
+tmp:
+  - last_run: 10
+```
+
+Now under the project root, you can just run
+```bash
+dave --config-file "experiment.yml"
+```
+
+and it will automatically run the experiment twice.
