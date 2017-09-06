@@ -14,6 +14,7 @@ setup(name="dave",
           "Intended Audience :: Science/Research",
           "Programming Language :: Python :: 3"
       ],
-      packages=["dave"],
-      install_requires=[""]
+      scripts=['bin/dave'],
+      # packages=["dave"],
+      install_requires=["params_proto", "pathos", "pathlib", "munch", "ruamel.yaml"]
       )

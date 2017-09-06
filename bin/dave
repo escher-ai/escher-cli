@@ -1,14 +1,14 @@
+#!python
 """Example script
-glow --config-file="experiment.yaml" --starting-index=0 --
+dave --config-file="experiment.yaml" --starting-index=0 --
 """
-from pathos.multiprocessing import ProcessingPool
 from pathlib import Path
 from subprocess import check_call
 
 from munch import DefaultMunch, Munch
-from ruamel.yaml import YAML
-
 from params_proto import cli_parse, ParamsProto
+from pathos.multiprocessing import ProcessingPool
+from ruamel.yaml import YAML
 
 
 @cli_parse
@@ -35,16 +35,20 @@ class RunConfig:
 args_serializer = lambda kwargs: " ".join("--{} {}".format(k.replace('_', '-'), v) for k, v in kwargs.items())
 
 
-def job(config: RunConfig):
+def job(run_config: RunConfig):
+
     def run(args):
-        args_hydrated = Munch(config.default_args)
+        args_hydrated = Munch(run_config.default_args)
         args_hydrated.update(vars(args))
         args_serialized = args_serializer(args_hydrated)
-        script = config.run.format(args=args_serialized)
-        check_call(script)
+        script = run_config.run.format(args=args_serialized)
+        try:
+            check_call(script, shell=True)
+        except Exception as e:
+            print(e)
 
-    args = config.batch_args or [config.args]
-    p = ProcessingPool(config.config.max_concurrent)
+    args = run_config.batch_args or [run_config.args]
+    p = ProcessingPool(run_config.config.max_concurrent)
     p.map(run, args)
 
 
