@@ -1,5 +1,9 @@
-from subprocess import check_call
+from subprocess import check_call, CalledProcessError
 
 
 def test_dave():
-    check_call("cd test_project && dave --config-file=experiment.yml", shell=True)
+    try:
+        check_call("cd ../test_project && source activate simulation && python "
+                   "../bin/dave --config-file=experiment.yml", shell=True)
+    except CalledProcessError as e:
+        print(e)

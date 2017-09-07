@@ -4,7 +4,8 @@
 ## Example Usage
 
 Suppose you have the following folder structure
-```tree
+
+```
 └── MAML_tensorflow
     ├── README.md
     ├── experiment.yml
@@ -13,13 +14,18 @@ Suppose you have the following folder structure
         ├── __init__.py
         └── mlp.py
 ```
+
 where the experiment.yml file looks like this:
+
 ```yaml
 %YAML 1.2
 ---
 config:
   max_concurrent: 10
-run: python maml_bradly.py {args}
+env:
+  PYTHONPATH: test_directory
+run: |
+  {env} python maml_bradly.py {args}
 default_args:
   npts: 100
   num_epochs: 70000
@@ -39,6 +45,7 @@ tmp:
 ```
 
 Now under the project root, you can just run
+
 ```bash
 dave --config-file "experiment.yml"
 ```
