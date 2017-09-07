@@ -3,7 +3,7 @@ from setuptools import setup
 setup(name="dave",
       description="A command line utility that runs your command line scripts from a yaml script",
       long_description="Dave runs your machine learning scripts from a yaml configuration file",
-      version="0.5.0",
+      version="0.5.1",
       url="https://github.com/episodeyang/dave",
       author="Ge Yang",
       author_email="yangge1987@gmail.com",
