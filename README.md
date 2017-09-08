@@ -15,7 +15,7 @@ The things it manages include:
 ## Example Usage
 
 <a href="figures/phd091010s.gif" target="_blank">
-<img align="left" src="./figures/phd091010s.gif"/>
+<img align="left" src="./figures/phd091010s.gif" width="200"/>
 </a>
 
 First install via `pip` (it's that simple!!)
