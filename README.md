@@ -14,7 +14,7 @@ The things it manages include:
 
 ## Example Usage
 
-<a href="figures/phd091010s.gif" target="_blank">
+<a href="./figures/lab_these_are_the_best_days.jpg" target="_blank">
 <img align="left" src="./figures/phd091010s_small.png" width="400" alt="migration-of-the-hari"/>
 </a>
 
