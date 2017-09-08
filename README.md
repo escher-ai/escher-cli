@@ -9,9 +9,13 @@ The things it manages include:
 
 - generating run-specific keys, like `{date}` and `{time}`, `{run_id}` and `{cwd}` that you can access as command line arguments in your script.
 - maximum numbers of concurrent runs (via python `multiprocess.Pool`)
-- environment variables (env)
-- default arguments
-- batch arguments for multiple experiments
+- environment variables (env) such as `DISPLAY=:1`. You can also passing a file
+- **default arguments**
+- **batch arguments** for multiple experiments
+- **pre-launch** scripts that is ran only once for each batch
+- **at-launch** script that is run at the launch time of each experiment
+- **post-launch** script that is as soon as each experiment launches
+- **post-run** scripts that happens after each experiment is done.
 
 `Dave` works with all of your current work flow and it doesn't lock you into a specific way of doing things. You still get to use bash scripts or Makefile's.
 
@@ -121,6 +125,7 @@ make dev test
 - [ ] Allow extensions
 - [ ] work on windows
 - [ ] allow env files
+- [ ] daemon mode
 
 ## Happy Doing Science!
 
