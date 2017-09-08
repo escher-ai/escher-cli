@@ -15,7 +15,7 @@ The things it manages include:
 ## Example Usage
 
 <a href="figures/phd091010s.gif" target="_blank">
-<img align="left" src="./figures/phd091010s_small.png" alt="migration-of-the-hari"/>
+<img align="left" src="./figures/phd091010s_small.png" width="300" alt="migration-of-the-hari"/>
 </a>
 
 First install via `pip` (it's that simple!!)
