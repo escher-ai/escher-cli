@@ -15,7 +15,7 @@ The things it manages include:
 ## Example Usage
 
 <a href="figures/phd091010s.gif" target="_blank">
-<img align="left" src="./figures/phd091010s.gif" width="200" alt="migration-of-the-hari"/>
+<img align="left" src="./figures/phd091010s_small.png" width="200" alt="migration-of-the-hari"/>
 </a>
 
 First install via `pip` (it's that simple!!)
@@ -87,8 +87,7 @@ make dev test
 - [ ] work on windows
 - [ ] allow env files
 
-## Why use?
+## Happy Doing Science!
 
-With experiments, there is always that one more :)
 ![one-more-experiment](./figures/phd092316s.gif)
 
