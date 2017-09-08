@@ -17,7 +17,7 @@ convert-rst:
 	sed -i '' 's/code/code-block/g' README
 	sed -i '' 's/\.\//https\:\/\/github\.com\/episodeyang\/dave\/blob\/master\//g' README
 	# sed -E -i '' 's/\.(jpg|png)/.\1?raw=true/g' README
-	perl -p -i -e 's/\.(jpg|png|gif)/_resized.$$1?raw=true\n   :width: 355px\n   :height: 266px\n   :scale: 50%/' README
+	perl -p -i -e 's/\.(jpg|png|gif)/.$$1?raw=true/' README
 	rst-lint README
 resize: # from https://stackoverflow.com/a/28221795/1560241
 	echo ./figures/!(*resized).jpg
