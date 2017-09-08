@@ -7,7 +7,7 @@ with open(path.join(path.abspath(path.dirname(__file__)), 'README'), encoding='u
 setup(name="dave",
       description="A command line utility that runs your command line scripts from a yaml script",
       long_description=long_description,
-      version="0.6.7",
+      version="0.7.0",
       url="https://github.com/episodeyang/dave",
       author="Ge Yang",
       author_email="yangge1987@gmail.com",
@@ -19,6 +19,6 @@ setup(name="dave",
           "Programming Language :: Python :: 3"
       ],
       scripts=['bin/dave'],
-      # packages=["dave"],
+      packages=["dave"],
       install_requires=["params_proto", "pathos", "pathlib", "munch", "ruamel.yaml"]
       )

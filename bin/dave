@@ -7,10 +7,13 @@ from pathlib import Path
 from subprocess import check_call
 
 # noinspection PyUnresolvedReferences
+from copy import deepcopy
 from params_proto import is_hidden, cli_parse, ParamsProto
 from pathos.multiprocessing import ProcessingPool
 from ruamel.yaml import YAML, sys
 from waterbear import DefaultBear, Bear
+
+from dave import RunTimeParams, hydrate_templates
 
 if sys.version_info >= (3, 6):
     script = '@cli_parse\n' \
@@ -81,6 +84,7 @@ def job(run_config: RunConfig):
 def main():
     # 1. take in yaml file, go through files and run one by one
     yaml = YAML(typ='unsafe', pure=True)
+    rt_params = RunTimeParams()
 
     # noinspection PyUnresolvedReferences
     config_path = Path(Experiment.config_file)
@@ -89,6 +93,7 @@ def main():
         hydrated = DefaultBear(None,
                                **{k: v for k, v in vars(RunConfig).items() if not is_hidden(k)})  # type: RunConfig
         hydrated.update(**run_config)
+        hydrate_templates(hydrated.default_args, deepcopy(rt_params))
         job(hydrated)
 
 

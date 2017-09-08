@@ -7,7 +7,7 @@
 
 The things it manages include:
 
-- generating run-specific keys, like `{date}` and `{time}`, `{run_id}` and `{cwd}` that you can access as command line arguments in your script.
+- generating run-specific variables, like `{time}` and `{cwd}` that you can access as template keys in your string.
 - maximum numbers of concurrent runs (via python `multiprocess.Pool`)
 - environment variables (env) such as `DISPLAY=:1`. You can also passing a file
 - **default arguments**
