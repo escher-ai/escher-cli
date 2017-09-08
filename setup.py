@@ -1,9 +1,13 @@
+from os import path
+
 from setuptools import setup
 
+with open(path.join(path.abspath(path.dirname(__file__)), 'README'), encoding='utf-8') as f:
+    long_description = f.read()
 setup(name="dave",
       description="A command line utility that runs your command line scripts from a yaml script",
-      long_description="Dave runs your machine learning scripts from a yaml configuration file",
-      version="0.6.2",
+      long_description=long_description,
+      version="0.6.3",
       url="https://github.com/episodeyang/dave",
       author="Ge Yang",
       author_email="yangge1987@gmail.com",
