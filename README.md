@@ -7,10 +7,45 @@
 
 The things it manages include:
 
-- maximum concurrent runs (via python `multiprocess.Pool`)
+- generating run-specific keys, like `{date}` and `{time}`, `{run_id}` and `{cwd}` that you can access ad command line arguments in your script.
+- maximum numbers of concurrent runs (via python `multiprocess.Pool`)
 - environment variables (env)
 - default arguments
 - batch arguments for multiple experiments
+
+`Dave` works with all of your current work flow and it doesn't lock you into a specific way of doing things. You still get to use bash scripts or Makefile's.
+
+## Why do we use YAML (with JSON planned as well)? My bash script is just fine!
+
+Because YAML(and json) are human **and** machine readable whereas base arguments are **not**. When is the last time you looked at a bash script looking for hyper-parameters, only to realized that some key parameters are missing? With `Dave` you won't have this problem. You can save all of the past and current runs as nicely readable YAML files(or json, Hjson Cson if you speak coffee script, whatever).
+
+- if you are writing a report, you can include these YAML/json/cson files directly into markdown or latex.
+- To see what you ran last night, you can `glob` all of the configurations with `runs/**/experiment.yml` and make nice tables in an instant.
+- To run a full batch of experiments, you can type `default_args` just ones, and then only repeat the fields that is different between each run.
+
+Most importantly, `Dave` wants to establish a standard command line tool for machine learning work, and having a standard `run.config.yml` is just the first step!
+
+## Why is `Dave` named "Dave"?
+
+It started out as an inside joke. Dave is my beloved adviser, and I thought it would be funny to `dave --config-file "load_electrons.yml"`.
+
+## How shall I use `Dave`?
+
+First thing first, you should `alias` `Dave` with whoever you want to call to run your experiments 😀 Recommended names include but not limited to
+
+- Michael
+- Fei-fei
+- Anna
+- Sasha
+- Michael
+- Michael
+- Michael (k. only if you are in med school...)
+
+but I recommend lower-case only since it is after all... a command line app.
+
+After aliasing this after your favorite person, you can follow the examples bellow :)
+
+Note that [**batteries are included**](https://www.facebook.com/episodeyang/videos/10101189402110434/), and your mileage will vary.
 
 ## Example Usage
 
