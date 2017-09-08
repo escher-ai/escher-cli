@@ -5,8 +5,8 @@
 
 `Dave` is a command line utility for your experiments. It manages concurrent runs, command line arguments and other stuff nicely for you!
 
-
 The things it manages include:
+
 - maximum concurrent runs (via python `multiprocess.Pool`)
 - environment variables (env)
 - default arguments
