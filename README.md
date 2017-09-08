@@ -1,8 +1,10 @@
+
 # `Dave`, a command line utility that runs your script with arguments load from a Yaml file
 
 :rocket::star:**Now `Dave` supports both python `3.5` and `3.6`!**:celebrate::collision:
 
 `Dave` is a command line utility for your experiments. It manages concurrent runs, command line arguments and other stuff nicely for you!
+
 
 The things it manages include:
 - maximum concurrent runs (via python `multiprocess.Pool`)
@@ -11,6 +13,8 @@ The things it manages include:
 - batch arguments for multiple experiments
 
 ## Example Usage
+
+<img algin="left" src="./figures/phd091010s.gif"/>
 
 First install via `pip` (it's that simple!!)
 
