@@ -27,6 +27,7 @@ pip install dave
 Suppose you have the following folder structure
 
 ```
+├── your_thesis
 └── MAML_tensorflow
     ├── README.md
     ├── experiment.yml
