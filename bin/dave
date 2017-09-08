@@ -6,32 +6,38 @@ import logging
 from pathlib import Path
 from subprocess import check_call
 
-from params_proto import cli_parse, ParamsProto, is_hidden
+# noinspection PyUnresolvedReferences
+from params_proto import is_hidden, cli_parse, ParamsProto
 from pathos.multiprocessing import ProcessingPool
-from ruamel.yaml import YAML
+from ruamel.yaml import YAML, sys
 from waterbear import DefaultBear, Bear
 
-
-@cli_parse
-class Experiment(ParamsProto):
-    """Supervised MAML in tensorflow"""
-    # config_file = './experiment.yml',  # type: "configuration of the experiment"
-    # starting_index = None,  # type: "hashed or integer index for the starting experiment"
-    config_file: "configuration of the experiment" = './experiment.yml'
-    starting_index: "hashed or integer index for the starting experiment" = 0
+if sys.version_info >= (3, 6):
+    script = '@cli_parse\n' \
+             'class Experiment(ParamsProto):\n' \
+             '    """Supervised MAML in tensorflow"""\n' \
+             '    config_file: "configuration of the experiment" = "./experiment.yml"\n' \
+             '    starting_index: "hashed or integer index for the starting experiment" = 0\n'
+else:
+    script = '@cli_parse\n' \
+             'class Experiment(ParamsProto):\n' \
+             '    """Supervised MAML in tensorflow"""\n' \
+             '    config_file = "./experiment.yml", """configuration of the experiment"""\n' \
+             '    starting_index = None, """hashed or integer index for the starting experiment"""\n'
+exec(script, globals())
 
 
 class RunnerConfig:
-    max_concurrent: int = 4
+    max_concurrent = 4  # type: int
 
 
 class RunConfig(Bear):
-    config: RunnerConfig = DefaultBear(None)
-    env: dict = {}
-    run: str = 'python main.py {args}'
-    default_args: dict = {}
-    args: dict = {}
-    batch_args: list = []
+    config = DefaultBear(None)  # type: RunnerConfig
+    env = {}  # type: dict
+    run = 'python main.py {args}'  # type: str
+    default_args = {}  # type: dict
+    args = {}  # type: dict
+    batch_args = []  # type: list
 
 
 env_serializer = lambda env: " ".join("{}={}".format(k, v) for k, v in env.items())
@@ -53,17 +59,16 @@ def run(run_config: RunConfig):
 
 
 def job(run_config: RunConfig):
-    # todo: Pool.map does not pickle this inner function correctly. Need to change strategy.
     logging.info(vars(run_config))
 
     if 'batch_args' in run_config:
         if ('args' in run_config) and run_config.args:
             logging.warning("both batch_args and args are defined. Only batch_args are used")
-        batch_args: list = run_config.batch_args
+        batch_args = run_config.batch_args  # type: list
     else:
         if 'args' not in run_config:
             raise RuntimeError("Neither `batch_args` nor `args` is found in run_config, please check your config file.")
-        batch_args: list = [vars(run_config.args)]
+        batch_args = [vars(run_config.args)]  # type: list
 
     rest_run_config = {k: v for k, v in vars(run_config).items() if k not in ['args', 'batch_args']}
     batch_run_configs = [
@@ -77,10 +82,12 @@ def main():
     # 1. take in yaml file, go through files and run one by one
     yaml = YAML(typ='unsafe', pure=True)
 
+    # noinspection PyUnresolvedReferences
     config_path = Path(Experiment.config_file)
     parsed = yaml.load_all(config_path)
     for run_config in parsed:
-        hydrated: RunConfig = DefaultBear(None, **{k: v for k, v in vars(RunConfig).items() if not is_hidden(k)})
+        hydrated = DefaultBear(None,
+                               **{k: v for k, v in vars(RunConfig).items() if not is_hidden(k)})  # type: RunConfig
         hydrated.update(**run_config)
         job(hydrated)
 

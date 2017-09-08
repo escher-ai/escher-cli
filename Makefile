@@ -29,4 +29,6 @@ publish: convert-rst
 	make wheel
 	twine upload dist/*
 test:
+	cd bin && \
+	pwd && \
 	python -m pytest --capture=no

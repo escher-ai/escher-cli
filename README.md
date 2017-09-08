@@ -1,5 +1,6 @@
 # `Dave`, a command line utility that runs your script with arguments load from a Yaml file
 
+Now `Dave` supports both python `3.5` and `3.6`!
 
 ## Example Usage
 
