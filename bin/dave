@@ -49,17 +49,19 @@ args_serializer = lambda kwargs: " ".join("--{} {}".format(k.replace('_', '-'), 
 
 
 def run(run_config: RunConfig):
-    env_hydrated = Bear(**run_config.env)
-    env_serialized = env_serializer(env_hydrated)
-    logging.debug("dave:env_serialized:{}".format(env_serialized), exc_info=False)
+    env_serialized = env_serializer(run_config.env)
+    hydrate_templates(run_config.args, RunTimeParams())
     args_serialized = args_serializer(run_config.args)
-    logging.debug("dave:args_serialized:{}".format(args_serialized), exc_info=False)
     script = run_config.run.format(args=args_serialized, env=env_serialized)
-    logging.debug("dave:job_script:{}".format(script), exc_info=False)
+
     try:
         check_call(script, shell=True)
     except Exception as e:
         print(e)
+
+    logging.debug("dave:env_serialized:{}".format(env_serialized), exc_info=False)
+    logging.debug("dave:args_serialized:{}".format(args_serialized), exc_info=False)
+    logging.debug("dave:job_script:{}".format(script), exc_info=False)
 
 
 def job(run_config: RunConfig):
@@ -85,7 +87,6 @@ def job(run_config: RunConfig):
 def main():
     # 1. take in yaml file, go through files and run one by one
     yaml = YAML(typ='unsafe', pure=True)
-    rt_params = RunTimeParams()
 
     # noinspection PyUnresolvedReferences
     parsed = yaml.load_all(Path(Experiment.config_file))
@@ -93,7 +94,6 @@ def main():
         hydrated = DefaultBear(None,
                                **{k: v for k, v in vars(RunConfig).items() if not is_hidden(k)})  # type: RunConfig
         hydrated.update(**run_config)
-        hydrate_templates(hydrated.default_args, deepcopy(rt_params))
         job(hydrated)
 
 

@@ -4,13 +4,14 @@
 env:
   PYTHONPATH: test_directory
 config:
-  max_concurrent: 10
+  max_concurrent: 2
 run: |
   # echo "requires python>=3.6"
   # source activate simulation
   {env} python main.py {args}
 #run: pwd
 default_args:
+  run_id : "{time:%Y-%m-%d/%H%M%S.%f}"
   npts: 100
   num_epochs: 70000
   num_tasks: 10
