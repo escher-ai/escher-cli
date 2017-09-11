@@ -3,17 +3,16 @@
 dave --config-file="experiment.yaml" --starting-index=0 --
 """
 import logging
+from copy import deepcopy
 from pathlib import Path
 from subprocess import check_call
 
+from dave import RunTimeParams, hydrate_templates
 # noinspection PyUnresolvedReferences
-from copy import deepcopy, copy
 from params_proto import is_hidden, cli_parse, ParamsProto
 from pathos.multiprocessing import ProcessingPool
 from ruamel.yaml import YAML, sys
 from waterbear import DefaultBear, Bear
-
-from dave import RunTimeParams, hydrate_templates
 
 if sys.version_info >= (3, 6):
     script = '@cli_parse\n' \
@@ -76,9 +75,9 @@ def job(run_config: RunConfig):
     with_default = []
     for args in batch_args:
         c = deepcopy(run_config)
-        c.args = run_config.default_args
+        c.args = deepcopy(run_config.default_args)
         c.args.update(**args)
-        with_default.append(run_config)
+        with_default.append(c)
     p = ProcessingPool(run_config.config.max_concurrent)
     p.map(run, with_default)
 
