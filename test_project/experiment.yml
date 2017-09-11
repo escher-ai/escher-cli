@@ -18,9 +18,9 @@ default_args:
   num_points_sampled: 10
   fix_amp: False
 batch_args: # use good typing convention here
-  - num_tasks: 10
-    num_grad_steps: 1
-    num_points_sampled: 10
+  - num_tasks: 20
+    num_grad_steps: 3
+    num_points_sampled: 50
 tmp:
   - last_run: 10
 

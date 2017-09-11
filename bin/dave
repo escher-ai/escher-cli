@@ -5,9 +5,10 @@ dave --config-file="experiment.yaml" --starting-index=0 --
 import logging
 from pathlib import Path
 from subprocess import check_call
+import sys
 
 # noinspection PyUnresolvedReferences
-from copy import deepcopy
+from copy import deepcopy, copy
 from params_proto import is_hidden, cli_parse, ParamsProto
 from pathos.multiprocessing import ProcessingPool
 from ruamel.yaml import YAML, sys
@@ -20,13 +21,15 @@ if sys.version_info >= (3, 6):
              'class Experiment(ParamsProto):\n' \
              '    """Supervised MAML in tensorflow"""\n' \
              '    config_file: "configuration of the experiment" = "./experiment.yml"\n' \
-             '    starting_index: "hashed or integer index for the starting experiment" = 0\n'
+             '    starting_index: "hashed or integer index for the starting experiment" = 0\n' \
+             '    dave_log: "log level for logging" = "info"\n'
 else:
     script = '@cli_parse\n' \
              'class Experiment(ParamsProto):\n' \
              '    """Supervised MAML in tensorflow"""\n' \
              '    config_file = "./experiment.yml", """configuration of the experiment"""\n' \
-             '    starting_index = None, """hashed or integer index for the starting experiment"""\n'
+             '    starting_index = None, """hashed or integer index for the starting experiment"""\n' \
+             '    dave_log = "info", """log level for logging"""\n'
 exec(script, globals())
 
 
@@ -50,11 +53,11 @@ args_serializer = lambda kwargs: " ".join("--{} {}".format(k.replace('_', '-'), 
 def run(run_config: RunConfig):
     env_hydrated = Bear(**run_config.env)
     env_serialized = env_serializer(env_hydrated)
-    logging.info(env_serialized)
+    logging.debug("dave:env_serialized:{}".format(env_serialized), exc_info=False)
     args_serialized = args_serializer(run_config.args)
-    logging.info(args_serialized)
+    logging.debug("dave:args_serialized:{}".format(args_serialized), exc_info=False)
     script = run_config.run.format(args=args_serialized, env=env_serialized)
-    logging.info(script)
+    logging.debug("dave:job_script:{}".format(script), exc_info=False)
     try:
         check_call(script, shell=True)
     except Exception as e:
@@ -62,8 +65,6 @@ def run(run_config: RunConfig):
 
 
 def job(run_config: RunConfig):
-    logging.info(vars(run_config))
-
     if 'batch_args' in run_config:
         if ('args' in run_config) and run_config.args:
             logging.warning("both batch_args and args are defined. Only batch_args are used")
@@ -73,12 +74,14 @@ def job(run_config: RunConfig):
             raise RuntimeError("Neither `batch_args` nor `args` is found in run_config, please check your config file.")
         batch_args = [vars(run_config.args)]  # type: list
 
-    rest_run_config = {k: v for k, v in vars(run_config).items() if k not in ['args', 'batch_args']}
-    batch_run_configs = [
-        Bear(**rest_run_config, args=args) for args in batch_args
-    ]
+    with_default = []
+    for args in batch_args:
+        c = copy(run_config)
+        c.args = run_config.default_args
+        c.args.update(**args)
+        with_default.append(run_config)
     p = ProcessingPool(run_config.config.max_concurrent)
-    p.map(run, batch_run_configs)
+    p.map(run, with_default)
 
 
 def main():
@@ -87,8 +90,7 @@ def main():
     rt_params = RunTimeParams()
 
     # noinspection PyUnresolvedReferences
-    config_path = Path(Experiment.config_file)
-    parsed = yaml.load_all(config_path)
+    parsed = yaml.load_all(Path(Experiment.config_file))
     for run_config in parsed:
         hydrated = DefaultBear(None,
                                **{k: v for k, v in vars(RunConfig).items() if not is_hidden(k)})  # type: RunConfig
@@ -98,4 +100,6 @@ def main():
 
 
 if __name__ == "__main__":
+    log_level = getattr(logging, Experiment.dave_log.upper(), None)
+    logging.getLogger().setLevel(log_level)
     main()
