@@ -5,7 +5,6 @@ dave --config-file="experiment.yaml" --starting-index=0 --
 import logging
 from pathlib import Path
 from subprocess import check_call
-import sys
 
 # noinspection PyUnresolvedReferences
 from copy import deepcopy, copy
@@ -76,7 +75,7 @@ def job(run_config: RunConfig):
 
     with_default = []
     for args in batch_args:
-        c = copy(run_config)
+        c = deepcopy(run_config)
         c.args = run_config.default_args
         c.args.update(**args)
         with_default.append(run_config)
