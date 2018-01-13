@@ -1,7 +1,16 @@
 
-# `Escher-CLI`, a command line utility that runs your script with arguments load from a Yaml file
+# Escher (`escher-cli`), a command line utility that runs your script with arguments load from a Yaml file
 
-🔥 💥**Now `Escher` supports both python `3.5` and `3.6`!** 🌟 ✨ ⚡️
+🔥 💥**Now `Escher` supports launching workers on AWS!** 🌟 ✨ ⚡️
+
+## Install and Usage
+
+```bash
+pip install escher-cli
+escher init  # this creates .escherrc configuration file
+escherd  # this launches the server via a daemon
+escher --config-file experiment.yml
+```
 
 `Escher` is a command line utility for your experiments. It manages concurrent runs, command line arguments and other stuff nicely for you!
 
