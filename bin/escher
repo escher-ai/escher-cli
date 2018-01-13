@@ -1,34 +1,26 @@
 #!python
 """Example script
-dave --config-file="experiment.yaml" --starting-index=0 --
+escher-cli --config-file="experiment.yaml" --starting-index=0 --
 """
 import logging
 from copy import deepcopy
 from pathlib import Path
 from subprocess import check_call
 
-from dave import RunTimeParams, hydrate_templates
+from escher import RunTimeParams, hydrate_templates
 # noinspection PyUnresolvedReferences
-from params_proto import is_hidden, cli_parse, ParamsProto
+from params_proto import is_hidden, cli_parse, Proto, ParamsProto
 from pathos.multiprocessing import ProcessingPool
 from ruamel.yaml import YAML, sys
 from waterbear import DefaultBear, Bear
 
-if sys.version_info >= (3, 6):
-    script = '@cli_parse\n' \
-             'class Experiment(ParamsProto):\n' \
-             '    """Supervised MAML in tensorflow"""\n' \
-             '    config_file: "configuration of the experiment" = "./experiment.yml"\n' \
-             '    starting_index: "hashed or integer index for the starting experiment" = 0\n' \
-             '    dave_log: "log level for logging" = "info"\n'
-else:
-    script = '@cli_parse\n' \
-             'class Experiment(ParamsProto):\n' \
-             '    """Supervised MAML in tensorflow"""\n' \
-             '    config_file = "./experiment.yml", """configuration of the experiment"""\n' \
-             '    starting_index = None, """hashed or integer index for the starting experiment"""\n' \
-             '    dave_log = "info", """log level for logging"""\n'
-exec(script, globals())
+
+@cli_parse
+class Experiment(ParamsProto):
+    """Supervised MAML in tensorflow"""
+    config_file = Proto(None, "configuration of the experiment")
+    starting_index = Proto(0, "hashed or integer index for the starting experiment")
+    dave_log = Proto("info", "log level for logging")
 
 
 class RunnerConfig:
@@ -59,9 +51,9 @@ def run(run_config: RunConfig):
     except Exception as e:
         print(e)
 
-    logging.debug("dave:env_serialized:{}".format(env_serialized), exc_info=False)
-    logging.debug("dave:args_serialized:{}".format(args_serialized), exc_info=False)
-    logging.debug("dave:job_script:{}".format(script), exc_info=False)
+    logging.debug("escher-cli:env_serialized:{}".format(env_serialized), exc_info=False)
+    logging.debug("escher-cli:args_serialized:{}".format(args_serialized), exc_info=False)
+    logging.debug("escher-cli:job_script:{}".format(script), exc_info=False)
 
 
 def job(run_config: RunConfig):

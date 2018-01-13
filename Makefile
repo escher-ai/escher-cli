@@ -11,11 +11,11 @@ wheel:
 	python setup.py bdist_wheel
 dev:
 	make wheel
-	pip install --ignore-installed dist/dave*.whl
+	pip install --ignore-installed dist/escher*.whl
 convert-rst:
 	pandoc -s README.md -o README --to=rst
 	sed -i '' 's/code/code-block/g' README
-	sed -i '' 's/\.\//https\:\/\/github\.com\/episodeyang\/dave\/blob\/master\//g' README
+	sed -i '' 's/\.\//https\:\/\/github\.com\/episodeyang\/escher-cli\/blob\/master\//g' README
 	# sed -E -i '' 's/\.(jpg|png)/.\1?raw=true/g' README
 	perl -p -i -e 's/\.(jpg|png|gif)/.$$1?raw=true/' README
 	rst-lint README

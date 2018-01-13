@@ -1,9 +1,9 @@
 
-# `Dave`, a command line utility that runs your script with arguments load from a Yaml file
+# `Escher-CLI`, a command line utility that runs your script with arguments load from a Yaml file
 
-🔥 💥**Now `Dave` supports both python `3.5` and `3.6`!** 🌟 ✨ ⚡️
+🔥 💥**Now `Escher` supports both python `3.5` and `3.6`!** 🌟 ✨ ⚡️
 
-`Dave` is a command line utility for your experiments. It manages concurrent runs, command line arguments and other stuff nicely for you!
+`Escher` is a command line utility for your experiments. It manages concurrent runs, command line arguments and other stuff nicely for you!
 
 The things it manages include:
 
@@ -17,35 +17,25 @@ The things it manages include:
 - **post-launch** script that is as soon as each experiment launches
 - **post-run** scripts that happens after each experiment is done.
 
-`Dave` works with all of your current work flow and it doesn't lock you into a specific way of doing things. You still get to use bash scripts or Makefile's.
+`Escher` works with all of your current work flow and it doesn't lock you into a specific way of doing things. You still get to use bash scripts or Makefile's.
 
 ## Why do we use YAML (with JSON planned as well)? My bash script is just fine!
 
-Because YAML(and json) are human **and** machine readable whereas base arguments are **not**. When is the last time you looked at a bash script looking for hyper-parameters, only to realized that some key parameters are missing? With `Dave` you won't have this problem. You can save all of the past and current runs as nicely readable YAML files(or json, Hjson Cson if you speak coffee script, whatever).
+Because YAML(and json) are human **and** machine readable whereas base arguments are **not**. When is the last time you looked at a bash script looking for hyper-parameters, only to realized that some key parameters are missing? With `Escher` you won't have this problem. You can save all of the past and current runs as nicely readable YAML files(or json, Hjson Cson if you speak coffee script, whatever).
 
 - if you are writing a report, you can include these YAML/json/cson files directly into markdown or latex.
 - To see what you ran last night, you can `glob` all of the configurations with `runs/**/experiment.yml` and make nice tables in an instant.
 - To run a full batch of experiments, you can type `default_args` just ones, and then only repeat the fields that is different between each run.
 
-Most importantly, `Dave` wants to establish a standard command line tool for machine learning work, and having a standard `run.config.yml` is just the first step!
+Most importantly, `Escher` wants to establish a standard command line tool for machine learning work, and having a standard `run.config.yml` is just the first step!
 
-## Why is `Dave` named "Dave"?
+## Why is `Escher` named "Escher"?
 
-It started out as an inside joke. Dave is my beloved adviser, and I thought it would be funny to `dave --config-file "load_electrons.yml"`.
+It used to be called `Dave`, after my adviser. I thought it would be funny to `dave --config-file "load_electrons.yml"`. Now it is named to `Escher` and `escher-cli`.
 
-## How shall I use `Dave`?
+## How shall I use `Escher`?
 
-First thing first, you should `alias` `Dave` with whoever you want to call to run your experiments 😀 Recommended names include but not limited to
-
-- Michael
-- Fei-fei
-- Anna
-- Sasha
-- Michael
-- Michael
-- Michael (k. only if you are in med school...)
-
-but I recommend lower-case only since it is after all... a command line app.
+First thing first, you could `alias` `Escher` with whoever you want to call to run your experiments 😀.
 
 After aliasing this after your favorite person, you can follow the examples bellow :)
 

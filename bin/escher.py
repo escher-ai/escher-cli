@@ -7,7 +7,7 @@ def test_dave_36():
         print('python 3.6')
         try:
             check_call("cd ../test_project && source activate simulation && python "
-                       "../bin/dave --config-file=experiment.yml", shell=True)
+                       "../bin/escher-cli --config-file=experiment.yml", shell=True)
         except CalledProcessError as e:
             print(e)
 
@@ -17,6 +17,6 @@ def test_dave_35():
         print('python 3.5')
         try:
             check_call("cd ../test_project && source activate gym && python "
-                       "../bin/dave --config-file=experiment.yml", shell=True)
+                       "../bin/escher-cli --config-file=experiment.yml", shell=True)
         except CalledProcessError as e:
             print(e)
