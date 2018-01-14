@@ -31,4 +31,4 @@ publish: convert-rst
 test:
 	cd bin && \
 	pwd && \
-	python -m pytest --capture=no
+	python -m pytest --capture=sys

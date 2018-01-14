@@ -1,0 +1,25 @@
+%YAML 1.2
+---
+
+env:
+  PYTHONPATH: test_directory
+config:
+  max_concurrent: 2
+run: |
+  # echo "requires python>=3.6"
+  # source activate simulation
+  {env} python main.py {args}
+#run: pwd
+default_args:
+  prefix: "ge_cnc"
+  # source_directory: "/tmp/data/{prefix}/{ref}"
+  log_directory: "/tmp/data/{prefix}"
+  run_id : "{time:%Y-%m-%d/%H%M%S.%f}"
+  default_int: 100
+batch_args: # use good typing convention here
+  - run_id: "test"
+    default_int: 10
+    default_bool: false
+    nargs_bool: [true, n]
+    nargs_int: [10, 100]
+    nargs_str: ["some", "thing"]

@@ -1,6 +1,6 @@
 #!python
 """Example script
-escher-cli --config-file="experiment.yaml" --starting-index=0 --
+escher-cli --config-file="experiment.yaml" --starting-index=0 --extra-arguments-etc
 """
 import logging
 from copy import deepcopy
@@ -18,9 +18,9 @@ from waterbear import DefaultBear, Bear
 @cli_parse
 class Experiment(ParamsProto):
     """Supervised MAML in tensorflow"""
-    config_file = Proto(None, "configuration of the experiment")
+    config_file = Proto(None, dtype=str, help="configuration of the experiment")
     starting_index = Proto(0, "hashed or integer index for the starting experiment")
-    dave_log = Proto("info", "log level for logging")
+    escher_log_level = Proto("info", "log level for logging")
 
 
 class RunnerConfig:
@@ -36,8 +36,17 @@ class RunConfig(Bear):
     batch_args = []  # type: list
 
 
+def arg_ser(v):
+    if type(v) in [str, int, float, dict]:
+        return str(v)
+    elif type(v) is bool:
+        return str(v).lower()
+    elif type(v) in [list, tuple, set]:
+        return ' '.join([arg_ser(i) for i in v])
+
+
 env_serializer = lambda env: " ".join("{}={}".format(k, v) for k, v in env.items())
-args_serializer = lambda kwargs: " ".join("--{} {}".format(k.replace('_', '-'), v) for k, v in kwargs.items())
+args_serializer = lambda kwargs: " ".join("--{} {}".format(k.replace('_', '-'), arg_ser(v)) for k, v in kwargs.items())
 
 
 def run(run_config: RunConfig):
@@ -45,6 +54,7 @@ def run(run_config: RunConfig):
     hydrate_templates(run_config.args, RunTimeParams())
     args_serialized = args_serializer(run_config.args)
     script = run_config.run.format(args=args_serialized, env=env_serialized)
+    print(script)
 
     try:
         check_call(script, shell=True)
@@ -72,6 +82,7 @@ def job(run_config: RunConfig):
         c.args = deepcopy(run_config.default_args)
         c.args.update(**args)
         with_default.append(c)
+    # this does not allow try multi-process.
     p = ProcessingPool(run_config.config.max_concurrent)
     p.map(run, with_default)
 
@@ -90,6 +101,6 @@ def main():
 
 
 if __name__ == "__main__":
-    log_level = getattr(logging, Experiment.dave_log.upper(), None)
+    log_level = getattr(logging, Experiment.escher_log_level.upper(), None)
     logging.getLogger().setLevel(log_level)
     main()

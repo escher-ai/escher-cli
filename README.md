@@ -30,7 +30,7 @@ The things it manages include:
 
 ## Why do we use YAML (with JSON planned as well)? My bash script is just fine!
 
-Because YAML(and json) are human **and** machine readable whereas base arguments are **not**. When is the last time you looked at a bash script looking for hyper-parameters, only to realized that some key parameters are missing? With `Escher` you won't have this problem. You can save all of the past and current runs as nicely readable YAML files(or json, Hjson Cson if you speak coffee script, whatever).
+Because YAML(and json) are human **and** machine readable whereas bash arguments are **not**. When is the last time you looked at a bash script looking for hyper-parameters, only to realized that some key parameters are missing? With `Escher` you won't have this problem. You can save all of the past and current runs as nicely readable YAML files(or json, Hjson Cson if you speak coffee script, whatever).
 
 - if you are writing a report, you can include these YAML/json/cson files directly into markdown or latex.
 - To see what you ran last night, you can `glob` all of the configurations with `runs/**/experiment.yml` and make nice tables in an instant.
@@ -40,7 +40,9 @@ Most importantly, `Escher` wants to establish a standard command line tool for m
 
 ## Why is `Escher` named "Escher"?
 
-It used to be called `Dave`, after my adviser. I thought it would be funny to `dave --config-file "load_electrons.yml"`. Now it is named to `Escher` and `escher-cli`.
+It used to be called `Dave`, after my adviser. I thought it would be funny to `dave --config-file "load_electrons.yml"`. Now it is named to `Escher` (as for the module), and `escher-cli` as the package name.
+
+There already exists a package called `escher` which is why this package is `escher-cli`. However I like the `-cli` postfix b/c it is more clear.
 
 ## How shall I use `Escher`?
 
@@ -107,7 +109,7 @@ tmp:
 Now under the project root, you can just run
 
 ```bash
-dave --config-file "experiment.yml"
+dave --config-file "test.escher"
 ```
 
 and it will automatically run the experiment twice, using the arguments in the `batch_args` field of the Yaml configuration file.
