@@ -7,12 +7,29 @@
 
 **PyPI Page**: [https://pypi.python.org/pypi/escher-cli](https://pypi.python.org/pypi/escher-cli)
 
+### Run Locally
+
 ```bash
 pip install escher-cli
-escher init  .escher
-escherd  # this launches the server via a daemon
-escher --config-file experiment.yml
+escher init  # this one creates the `.escher` 
+escher run scripts/load_electron.escher
 ```
+
+### To run experiments on Remote Workers
+
+- [ ] add remote worker support
+
+```bash
+pip install escher-cli
+escher init --aws-example
+escherd  # this starts the local daemon
+# now sit back and enjoy the show
+esher run --worker=gpu-worker scripts/load_electrons.escher
+```
+
+Configuration for the `gpu-worker` sits inside the `.escher` file. It specifies the `aws` image id, security group etc.
+
+## Overview
 
 `Escher` is a command line utility for your experiments. It manages concurrent runs, command line arguments and other stuff nicely for you!
 
