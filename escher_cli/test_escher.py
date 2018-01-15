@@ -27,27 +27,27 @@ def harness(*commands, wd=TEST_PROJECT_ROOT, ok=True, debug=True):
     return result
 
 
-# def test():
-#     result = harness(debug=False)
-#     print(result.output)
+def test():
+    result = harness(debug=False)
+    print(result.output)
 
 
-# def test_run_help():
-#     result = harness('run', '-h')
-#     print(result.output)
-#
-
-# def test_run():
-#     """should run the default script"""
-#     result = harness('run', ok=True)
-#     print(result.output)
+def test_run_help():
+    result = harness('run', '-h')
+    print(result.output)
 
 
-# def test_run_rc():
-#     """should run the default script"""
-#     result = harness('run', 'test', ok=True)
-#     print(result.output)
-#
+def test_run():
+    """should run the default script"""
+    result = harness('run', ok=True)
+    print(result.output)
+
+
+def test_run_rc():
+    """should run the default script"""
+    result = harness('run', 'test', ok=True)
+    print(result.output)
+
 
 def test_run_external():
     """should run the default script"""

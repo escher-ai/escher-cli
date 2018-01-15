@@ -5,6 +5,8 @@
 
 ## Install and Usage
 
+**PyPI Page**: [https://pypi.python.org/pypi/escher-cli](https://pypi.python.org/pypi/escher-cli)
+
 ```bash
 pip install escher-cli
 escher init  .escher
