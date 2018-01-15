@@ -7,7 +7,7 @@
 
 ```bash
 pip install escher-cli
-escher init  # this creates .escherrc configuration file
+escher init  .escher
 escherd  # this launches the server via a daemon
 escher --config-file experiment.yml
 ```
@@ -109,7 +109,7 @@ tmp:
 Now under the project root, you can just run
 
 ```bash
-dave --config-file "test.escher"
+dave --config-file "escher.py"
 ```
 
 and it will automatically run the experiment twice, using the arguments in the `batch_args` field of the Yaml configuration file.

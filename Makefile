@@ -29,6 +29,6 @@ publish: convert-rst
 	make wheel
 	twine upload dist/*
 test:
-	cd bin && \
+	cd escher_cli && \
 	pwd && \
-	python -m pytest --capture=sys
+	python -m pytest --capture=sys --color=yes

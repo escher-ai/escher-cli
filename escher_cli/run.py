@@ -1,26 +1,28 @@
 #!python
 """Example script
-escher-cli --config-file="experiment.yaml" --starting-index=0 --extra-arguments-etc
+escher.py-cli --config-file="experiment.yaml" --starting-index=0 --extra-arguments-etc
 """
 import logging
 from copy import deepcopy
+from distutils.util import strtobool
 from pathlib import Path
 from subprocess import check_call
 
+import click
 from escher import RunTimeParams, hydrate_templates
 # noinspection PyUnresolvedReferences
 from params_proto import is_hidden, cli_parse, Proto, ParamsProto
 from pathos.multiprocessing import ProcessingPool
-from ruamel.yaml import YAML, sys
+from ruamel.yaml import YAML, sys, os
 from waterbear import DefaultBear, Bear
 
 
-@cli_parse
-class Experiment(ParamsProto):
-    """Supervised MAML in tensorflow"""
-    config_file = Proto(None, dtype=str, help="configuration of the experiment")
-    starting_index = Proto(0, "hashed or integer index for the starting experiment")
-    escher_log_level = Proto("info", "log level for logging")
+# @cli_parse
+# class Escher(ParamsProto):
+#     """Escher-cli, a command line tool that helps with your ML experiments"""
+#     config_file = Proto(None, dtype=str, help="configuration of the experiment", aliases=['-c'])
+#     root_config = Proto('.escher', dtype=str, help="path to the root-configuration", aliases=['-r'])
+#     debug = Proto(True, dtype=bool, help="debug flag, prints out bunch of useful stuff when set")
 
 
 class RunnerConfig:
@@ -61,9 +63,9 @@ def run(run_config: RunConfig):
     except Exception as e:
         print(e)
 
-    logging.debug("escher-cli:env_serialized:{}".format(env_serialized), exc_info=False)
-    logging.debug("escher-cli:args_serialized:{}".format(args_serialized), exc_info=False)
-    logging.debug("escher-cli:job_script:{}".format(script), exc_info=False)
+    logging.debug("escher.py-cli:env_serialized:{}".format(env_serialized), exc_info=False)
+    logging.debug("escher.py-cli:args_serialized:{}".format(args_serialized), exc_info=False)
+    logging.debug("escher.py-cli:job_script:{}".format(script), exc_info=False)
 
 
 def job(run_config: RunConfig):
@@ -87,20 +89,38 @@ def job(run_config: RunConfig):
     p.map(run, with_default)
 
 
-def main():
-    # 1. take in yaml file, go through files and run one by one
+def run(root_config, config_file, debug):
+    """Escher-cli, a command line tool that helps with your ML experiments"""
+
+    logging.getLogger().setLevel(logging.DEBUG if debug else logging.INFO)
+
     yaml = YAML(typ='unsafe', pure=True)
 
-    # noinspection PyUnresolvedReferences
-    parsed = yaml.load_all(Path(Experiment.config_file))
+    # 0. load `.escher` file
+    p = Path(root_config)
+    print(p)
+    try:
+        parsed = yaml.load_all(Path(root_config))
+    except Exception as e:
+        print(e)
+        raise EnvironmentError(
+            f'{root_config} file is missing. Use `escher.py init` or manually add `.escher` file to the root of the project.')
+    rc = next(parsed)
+    print(rc)
+
+    # 1. take in yaml file, go through files and run one by one
+    if config_file is None:
+        raise EnvironmentError(f'need --config-file option')
+    try:
+        # noinspection PyUnresolvedReferences
+        parsed = yaml.load_all(Path(config_file))
+    except Exception as e:
+        raise EnvironmentError(f'config-file parse error', e)
+
     for run_config in parsed:
-        hydrated = DefaultBear(None,
-                               **{k: v for k, v in vars(RunConfig).items() if not is_hidden(k)})  # type: RunConfig
+        hydrated = DefaultBear(None, **{k: v for k, v in vars(RunConfig).items()
+                                        if not is_hidden(k)})  # type: RunConfig
         hydrated.update(**run_config)
         job(hydrated)
 
 
-if __name__ == "__main__":
-    log_level = getattr(logging, Experiment.escher_log_level.upper(), None)
-    logging.getLogger().setLevel(log_level)
-    main()

@@ -19,7 +19,12 @@ setup(name="escher-cli",
           "Intended Audience :: Science/Research",
           "Programming Language :: Python :: 3"
       ],
-      scripts=['bin/escher'],
+      # scripts=['escher_cli/escher.py'],
+      py_modules=["escher", "escher_cli"],
+      entry_points="""
+          [console_scripts]
+          escher=escher_cli.escher:escher
+      """,
       packages=["escher"],
-      install_requires=["params_proto", "pathos", "pathlib", "munch", "ruamel.yaml"]
+      install_requires=["Click", "click-default-group", "params_proto", "pathos", "pathlib", "munch", "ruamel.yaml"]
       )
