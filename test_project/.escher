@@ -18,5 +18,5 @@ max_idle: 3600
 #    - path: /tmp/data
 #      bucket: s3://ge-bucket/source
 scripts:
-  default: escher run ./scripts/default.escher
-  test: escher run ./scripts/test.escher
+  default: ./scripts/default.escher
+  test: ./scripts/test.escher
