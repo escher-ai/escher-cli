@@ -2,13 +2,15 @@
 """Example script
 escher.py-cli --config-file="experiment.yaml" --starting-index=0 --extra-arguments-etc
 """
-from os import getcwd
+from functools import reduce
+from os import getcwd, environ
 from pprint import pformat
 import click
+import re
+
 from click import Abort
 from escher_cli import helpers
-import escher_cli.helpers
-from escher_cli.local_runner import main
+from escher_cli import local_runner
 from subprocess import check_call
 
 
@@ -17,8 +19,8 @@ from subprocess import check_call
 def escher(debug):
     """Escher-cli is a command line tool for your ML training."""
     if debug:  # set debug flag in helpers
-        escher_cli.helpers.set_debug()
-    escher_cli.helpers.debug("debug mode is ON.")
+        helpers.set_debug()
+    helpers.debug("debug mode is ON.")
 
 
 @escher.command(context_settings=dict(ignore_unknown_options=True))
@@ -46,38 +48,46 @@ def run(ctx, worker, script, args):
     Examples:
         ✓ escher run -h/--help
         ✓ escher run  # runs the default script
-        ✗ escher run test  # runs the test script defined in .escher
-        ✗ escher run scripts/test.escher
+        ✓ escher run test  # runs the test script defined in .escher
+        ✓ escher run scripts/test.escher
         ✗ escher run scripts/test.escher -w gpu-worker
         ✗ escher run scripts/test.escher -w gpu-worker -b
     """
-    escher_cli.helpers.debug("locals:\n", pformat(locals()))
+    helpers.debug("locals:\n", pformat(locals()))
     try:
         config_rc = helpers.load_config(ESCHERRC_PATH)
     except FileNotFoundError as e:
         click.echo(f"trying to read `{ESCHERRC_PATH}` but \n{e}")
         raise Abort(e)
-    escher_cli.helpers.debug("config_rc:\n", pformat(vars(config_rc)))
+    helpers.debug("config_rc:\n", pformat(vars(config_rc)))
 
     if config_rc.scripts:
-        escher_cli.helpers.debug(config_rc.scripts)
+        helpers.debug(config_rc.scripts)
     if config_rc.scripts and script in config_rc.scripts:
-        _s = config_rc.scripts[script].strip()
-        escher_cli.helpers.debug('is existing script', _s)
+        shell, _s = True, config_rc.scripts[script].strip()
+        helpers.debug(f'run script from `.escher` runcom file: "{_s}"')
+        # done: run *.escher file directly as escher script without bash. Parse as ^(\b*)[\.\\\/A-z]\.escher\b(.*)
+    else:
+        # todo: need to make sure environment is set correctly for this run.
+        # todo: set environment variables
+        helpers.debug('looking for script', script)
+        shell, _s = False, [script, *args]
+
+    if worker == "local":
         # todo: need to take care of remote execution
         # todo: need to make sure environment is set correctly for this run.
         # todo: is this blocking?
-        # todo: run *.escher file directly as escher script without bash. Parse as ^(\b*)[\.\\\/A-z]\.escher\b(.*)
-        return check_call(" ".join([_s, *args]), shell=True)
-    else:
-        escher_cli.helpers.debug('looking for script', script)
-        _s = script
-
-    if worker == "local":
+        # todo pass-through extra arguments
         # todo: move logic in `main` here?
-        main(_s)
+        if helpers.is_script(_s):
+            local_runner.main(_s)
+        elif helpers.is_list_tuple_set(_s) and _s and helpers.is_script(_s[0]):
+            local_runner.main(" ".join(_s))
+        else:
+            helpers.debug(_s, shell)
+            my_env = environ.copy()
+            return check_call(_s, shell=shell, env=my_env)
     else:
-        # todo: imeplement other type of workers.
+        # todo: implement other type of workers.
         # todo: aws worker, require remote daemon and ws graphQL server
         pass
-        
