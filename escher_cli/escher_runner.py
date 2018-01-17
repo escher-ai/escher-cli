@@ -104,8 +104,3 @@ def main(config_file):
     except Exception as e:
         raise EnvironmentError(f'config-file parse error', e)
 
-
-def script_runner(script, wd=None):
-    """todo: also handles bash command, move stuff from escher.run here."""
-
-    pass
