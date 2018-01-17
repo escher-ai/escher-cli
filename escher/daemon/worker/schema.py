@@ -1,5 +1,16 @@
 import graphene
+from escher_cli import local_runner, runner
 
+from escher_cli.escher import run
+
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#                                                                                           #
+#          make sure you make this as thin as possible.                                     #
+#                                                                                           #
+#          Use this as a *thin* wrapper around the `cli` module.                            #
+#                                                                                           #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 ### Types
 class Job(graphene.ObjectType):
@@ -10,11 +21,13 @@ class Job(graphene.ObjectType):
 ### Mutations
 class StartJob(graphene.Mutation):
     class Input:
-        name = graphene.String()
+        work_directory = graphene.String()
+        config_file = graphene.String()
 
     pid = graphene.String()
 
     def mutate(self, args, context, info):
+        runner.run(args.get('config_file'), args.get('work_directory'))
         return StartJob(pid=args.get('name'))
 
 

@@ -1,22 +1,25 @@
 %YAML 1.2
 ---
-backend: aws
-min_pool: 2
-max_pool: 20
-max_idle: 3600
-#master:
-#  ip: localhost
-#  port: 2000
+# todo: be able to start master server
+# todo: worker be able to run escher
+name: flux
+scripts:
+  default: echo '`escher run` <default> script works!'
+  test: ./scripts/test.escher
+master:
+  tag: "{name}-"
+  ip: localhost
+  port: 2000
 #  launch: rc.gpu-worker
 #  instance-tags:
 #    project: few_shot_density_rl
 #  volume-tags:  # make sure non-value works as well
 #gpu-worker:
+#  min_pool: 2
+#  max_pool: 20
+#  max_idle: 3600
 #  type: aws
 #  image: ims-blah
 #  mount:
 #    - path: /tmp/data
 #      bucket: s3://ge-bucket/source
-scripts:
-  default: ./scripts/default.escher
-  test: ./scripts/test.escher

@@ -88,6 +88,9 @@ def main(config_file):
     """Escher-cli, a command line tool that helps with your ML experiments"""
 
     # logging.getLogger().setLevel(logging.DEBUG if debug else logging.INFO)
+    # 0. set cwd if exist
+    # if wd:
+    #     os.chdir(wd)
     # 1. take in yaml file, go through files and run one by one
     if config_file is None:
         raise EnvironmentError(f'need --config-file option')
@@ -100,3 +103,9 @@ def main(config_file):
         job(hydrated)
     except Exception as e:
         raise EnvironmentError(f'config-file parse error', e)
+
+
+def script_runner(script, wd=None):
+    """todo: also handles bash command, move stuff from escher.run here."""
+
+    pass

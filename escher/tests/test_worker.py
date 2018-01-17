@@ -17,13 +17,18 @@ def test_running():
 
 
 def test_start_job():
+    # todo: get this to work. fix path.
     result = schema.execute("""
     mutation {
-        startJob (name:"Peter") {
-            name
+        startJob (
+            configFile:"scripts/test.escher",
+            workDirectory: "../../test_project"
+        ) {
+            pid
         }
     }""")
     print(result.data)
+    print(result.errors)
 
 
 def test_halt_job():

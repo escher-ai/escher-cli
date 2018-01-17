@@ -9,6 +9,7 @@
 
 ## Todo and Milestones
 
+- [ ] run locally
 - [ ] build a worker daemon that `start`, `halt`, `resume`, `reran` jobs
     - [x] finish graphQL schema
 - [ ] build a master controller that
@@ -18,19 +19,19 @@
         - [ ] running
         - [ ] ran
     - [ ] finish graphQL schema
-    
-- define job file and schema (.escher.run)
 
 ### Done
 
-- [ ] running locally
+- [x] define job file and schema (.escher.run)
 
 ### Run Locally
 
 ```bash
-pip install escher-cli
-escher init  # this one creates the `.escher` 
-escher run scripts/load_electron.escher
+✓ pip install escher-cli
+✗ escher init  # this one creates the `.escher` 
+✓ escher run  # runs a default script
+# outputs >> `escher run` <default> script works!
+✓ escher run scripts/load_electron.escher  # escher script that "looks like" this.
 ```
 
 ### To run experiments on Remote Workers
@@ -38,10 +39,11 @@ escher run scripts/load_electron.escher
 - [ ] add remote worker support
 
 ```bash
-pip install escher-cli
-escher init --aws-example
-escher daemon
+✓ pip install escher-cli
+✗ escher init --aws-example
 escherd  # this starts the local daemon
+    ✗ escher master
+    ✗ escher worker
 # now sit back and enjoy the show
 esher run --worker=gpu-worker scripts/load_electrons.escher
 ```
