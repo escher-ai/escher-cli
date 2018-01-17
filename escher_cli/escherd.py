@@ -10,7 +10,7 @@ import re
 
 from click import Abort
 from escher_cli import helpers
-from escher_cli import local_runner
+from escher_cli import escher_runner
 from subprocess import check_call
 
 
@@ -79,9 +79,9 @@ def run(ctx, worker, script, args):
         # todo pass-through extra arguments
         # todo: move logic in `main` here?
         if helpers.is_script(_s):
-            local_runner.main(_s)
+            escher_runner.main(_s)
         elif helpers.is_list_tuple_set(_s) and _s and helpers.is_script(_s[0]):
-            local_runner.main(" ".join(_s))
+            escher_runner.main(" ".join(_s))
         else:
             helpers.debug(_s, shell)
             my_env = environ.copy()

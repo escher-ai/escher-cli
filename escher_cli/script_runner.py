@@ -6,7 +6,7 @@ from subprocess import check_call
 import click
 from _ruamel_yaml import ScannerError
 from click import Abort
-from escher_cli import helpers, local_runner
+from escher_cli import helpers, escher_runner
 
 ESCHERRC_PATH = ".escher"
 
@@ -66,9 +66,9 @@ def run(worker, script, work_directory, args):
         # todo pass-through extra arguments
         # todo: move logic in `main` here?
         if helpers.is_script(_s):
-            local_runner.main(_s)
+            escher_runner.main(_s)
         elif helpers.is_list_tuple_set(_s) and _s and helpers.is_script(_s[0]):
-            local_runner.main(" ".join(_s))
+            escher_runner.main(" ".join(_s))
         else:
             helpers.debug(_s, shell)
             my_env = environ.copy()

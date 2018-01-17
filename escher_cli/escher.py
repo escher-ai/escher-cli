@@ -10,7 +10,7 @@ import re
 
 from click import Abort
 import escher_cli
-from escher_cli import helpers, runner
+from escher_cli import helpers, script_runner
 from subprocess import check_call
 
 
@@ -18,6 +18,8 @@ from subprocess import check_call
 @click.option('--debug', is_flag=True)
 def escher(debug):
     """Escher-cli is a command line tool for your ML training."""
+    # todo: use decorator pattern to share common parameters
+    # link: https://github.com/pallets/click/issues/108
     if debug:  # set debug flag in helpers
         helpers.set_debug()
     helpers.debug("debug mode is ON.")
@@ -34,7 +36,7 @@ def init():
 # @escher.py.argument()
 @click.option('--worker', '-w', default='local', type=str)
 @click.argument('script', default="default", type=str)
-@click.argument('--work-directory', default=getcwd(), type=str)
+@click.option('--work-directory', default=getcwd(), type=str)
 @click.argument('args', nargs=-1, type=click.UNPROCESSED)
 def run(ctx, worker, script, work_directory, args):
-    return runner.run(worker, script, work_directory, args)
+    return script_runner.run(worker, script, work_directory, args)

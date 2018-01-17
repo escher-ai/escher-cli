@@ -1,5 +1,5 @@
 import graphene
-from escher_cli import local_runner, runner
+from escher_cli import escher_runner, script_runner
 
 from escher_cli.escher import run
 
@@ -27,7 +27,7 @@ class StartJob(graphene.Mutation):
     pid = graphene.String()
 
     def mutate(self, args, context, info):
-        runner.run(args.get('config_file'), args.get('work_directory'))
+        script_runner.run(args.get('config_file'), args.get('work_directory'))
         return StartJob(pid=args.get('name'))
 
 

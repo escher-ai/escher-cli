@@ -8,12 +8,12 @@ TEST_PROJECT_ROOT = "../test_project"
 def harness(*commands, wd=TEST_PROJECT_ROOT, ok=True, debug=True):
     """
     :param commands:
-    :param wd:
+    :param wd: Set to None if the subcommand does not support work-directory
     :param ok: assert that the process runs without error.
     :return:
     """
-    os.chdir(wd)
     _c = ["--debug", *commands] if debug else commands
+    _c = [*_c, "--work-directory", wd] if wd else _c
     print()
     print('════════════════════ SCRIPT ════════════════════')
     print(f"escher {' '.join(_c)}")
@@ -28,7 +28,7 @@ def harness(*commands, wd=TEST_PROJECT_ROOT, ok=True, debug=True):
 
 
 def test():
-    result = harness(debug=False)
+    result = harness(debug=False, wd=None)
     print(result.output)
 
 
