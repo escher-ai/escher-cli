@@ -1,6 +1,6 @@
 #!python
 """Example script
-escher.py-cli --config-file="experiment.yaml" --starting-index=0 --extra-arguments-etc
+escherd  # reads in the .escher file
 """
 from functools import reduce
 from os import getcwd, environ
@@ -16,20 +16,18 @@ from subprocess import check_call
 
 @click.group(context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('--debug', is_flag=True)
-def escher(debug):
-    """Escher-cli is a command line tool for your ML training."""
+def escherd(debug):
+    """the daemon for the escher-cli"""
     if debug:  # set debug flag in helpers
         helpers.set_debug()
     helpers.debug("debug mode is ON.")
 
 
-@escher.command(context_settings=dict(ignore_unknown_options=True))
+@escherd.command(context_settings=dict(ignore_unknown_options=True))
 def init():
     """initialize the project with an .escher runcom file, similar to `.babelrc` or `.bashrc`"""
     pass
 
-
-ESCHERRC_PATH = ".escher"
 
 
 @escher.command(context_settings=dict(ignore_unknown_options=True))

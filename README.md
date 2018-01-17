@@ -22,6 +22,7 @@ escher run scripts/load_electron.escher
 ```bash
 pip install escher-cli
 escher init --aws-example
+escher daemon
 escherd  # this starts the local daemon
 # now sit back and enjoy the show
 esher run --worker=gpu-worker scripts/load_electrons.escher
