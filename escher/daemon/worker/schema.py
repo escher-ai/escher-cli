@@ -38,10 +38,21 @@ class ResumeJob(graphene.Mutation):
         return ResumeJob(pid=args.get('name'))
 
 
+class RerunJob(graphene.Mutation):
+    class Input:
+        name = graphene.String()
+
+    pid = graphene.String()
+
+    def mutate(self, args, context, info):
+        return RerunJob(pid=args.get('name'))
+
+
 class Mutations(graphene.ObjectType):
     start_job = StartJob.Field()
     halt_job = HaltJob.Field()
     resume_job = ResumeJob.Field()
+    rerun_job = RerunJob.Field()
 
 
 ### Queries

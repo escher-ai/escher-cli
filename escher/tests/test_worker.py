@@ -45,3 +45,12 @@ def test_resume_job():
     }""")
     print(result.data)
 
+
+def test_rerun_job():
+    result = schema.execute("""
+    mutation {
+        rerunJob (name:"Peter") {
+            name
+        }
+    }""")
+    print(result.data)

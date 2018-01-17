@@ -7,6 +7,24 @@
 
 **PyPI Page**: [https://pypi.python.org/pypi/escher-cli](https://pypi.python.org/pypi/escher-cli)
 
+## Todo and Milestones
+
+- [ ] build a worker daemon that `start`, `halt`, `resume`, `reran` jobs
+    - [x] finish graphQL schema
+- [ ] build a master controller that
+    - [ ] does worker discovery (worker report on startup)
+    - [ ] maintains a list of jobs
+        - [ ] new
+        - [ ] running
+        - [ ] ran
+    - [ ] finish graphQL schema
+    
+- define job file and schema (.escher.run)
+
+### Done
+
+- [ ] running locally
+
 ### Run Locally
 
 ```bash
