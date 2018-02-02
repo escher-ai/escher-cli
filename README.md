@@ -3,6 +3,32 @@
 
 🔥 💥**Now `Escher` supports launching workers on AWS!** 🌟 ✨ ⚡️
 
+## Where Am I? (for the developer himself)
+
+1. [ ] **Need to add `escher init`** so that you have a standard way to setup the scripts for a project.
+
+**For Usage, jump to the next section already :)**
+
+## Motivations
+
+When publishing deep-learning models, there are a lot of boilerplate scripts for the training and inference. When there are twenty-plus models in your work folder it gets increasingly difficult to maintain copies of run scripts that has tight bindings with the particular server you were using.
+
+It makes sense to use a single deep-learning `cli` to minimalize these copy-and-pasted scripts 
+
+When you work on a lot of deep-learning project, some of them playing with other people's code, some of then developing new ones, it really makes sense to standard the structure of project and reduce boiler plate. Here with `escher-cli`, we learn from the best packaging tools on this planet, Ruby `gem`, Javascript `npm`, and rust `crate`. We are particularly inspired by `create-react-app` and the good work that you-know-who has offered the `reactjs` community, and some of the lessons people have learned over-the-years from tools like `gulp`, `bower`, `webpack` and numerous others.
+
+You can think of `escher-cli` as the `create-react-app` for deep-learning. The reason why you want use this is because it offers a boilerplate-free way to **setup new project**, **launch and manage aws, azure, google compute engine servers**, **local and remote training**. Instead of writing `Makefiles` that you have to copy paste in every project, you install `escher-cli` globally *or* in your particular project virtual-env.
+
+In summary, our (**what**) contributions (**you**) are (**get**):
+
+1. A community-driven standard in deep-ML training, development and (later) serving.
+2. cross-platform `cli` tools that reduces the cognitive load of running training locally and globally
+3. No copy-and-paste scripts in each project.
+
+### IDE Support
+
+We will build a cli tool first. If this catches on, I'm sure JetBrains will add integration in PyCharm:) And if you are not using PyCharm, you should :-P
+
 ## Install and Usage
 
 **PyPI Page**: [https://pypi.python.org/pypi/escher-cli](https://pypi.python.org/pypi/escher-cli)
